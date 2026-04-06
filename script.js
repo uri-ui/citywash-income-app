@@ -3,8 +3,7 @@ let currentUser = null;
 let companies = [];
 let incomeTypes = [];
 
-const API_URL = 'http://localhost:3000/api';
-
+const API_URL = "/api";
 // ==================== Login Functions ====================
 
 document.getElementById('sendOtpBtn').addEventListener('click', async () => {
