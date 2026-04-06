@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>אפליקציית הכנסות - סיטי וואש</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+      <div class="container">
+        <div class="logo">🚗</div>
+        <h1>סיטי וואש - ניהול הכנסות</h1>
+        
+        <div class="form-group">
+          <label>מספר טלפון</label>
+          <input type="tel" id="phoneInput" placeholder="05XX-XXXXXX" required>
+          <button id="sendOtpBtn" class="btn btn-primary">שלח OTP</button>
+        </div>
+
+        <div id="otpSection" style="display: none;">
+          <div class="form-group">
+            <label>קוד OTP</label>
+            <input type="text" id="otpInput" placeholder="הכנס קוד 6 ספרות" required>
+            <button id="verifyOtpBtn" class="btn btn-success">אמת</button>
+            <button id="resendOtpBtn" class="btn btn-secondary">שלח שוב</button>
+          </div>
+        </div>
+
+        <div id="otpStatus" class="status"></div>
+      </div>
+    </div>
+
+    <!-- Main App Screen -->
+    <div id="mainScreen" class="screen">
+      <nav class="navbar">
+        <div class="container">
+          <div class="navbar-left">
+            <h2>סיטי וואש</h2>
+            <span id="userDisplay" class="user-display"></span>
+          </div>
+          <button id="logoutBtn" class="btn btn-outline">התנתק</button>
+        </div>
+      </nav>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="income">הזנת הכנסות</button>
+        <button class="tab-btn" data-tab="reports">דוחות</button>
+      </div>
+
+      <!-- Income Tab -->
+      <div id="incomeTab" class="tab-content active">
+        <div class="container">
+          <h2>הוסף הכנסה חדשה</h2>
+          
+          <form id="incomeForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>חברה</label>
+                <select id="companySelect" required>
+                  <option value="">בחר חברה</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>סניף</label>
+                <select id="branchSelect" required disabled>
+                  <option value="">בחר סניף</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>סוג הכנסה</label>
+                <select id="incomeTypeSelect" required>
+                  <option value="">בחר סוג</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>סכום</label>
+                <input type="number" id="amountInput" placeholder="0.00" step="0.01" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="includeVatCheckbox" checked>
+                הסכום כולל מעמ"מ (18%)
+              </label>
+            </div>
+
+            <div id="vatCalculation" class="vat-info">
+              <p>סכום ללא מעמ"מ: <strong id="amountWithoutVat">0.00</strong> ₪</p>
+              <p>מעמ"מ: <strong id="vatAmount">0.00</strong> ₪</p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">הוסף הכנסה</button>
+          </form>
+
+          <div id="incomeStatus" class="status"></div>
+        </div>
+      </div>
+
+      <!-- Reports Tab -->
+      <div id="reportsTab" class="tab-content">
+        <div class="container">
+          <h2>דוחות</h2>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>חודש</label>
+              <select id="reportMonth" required>
+                <option value="01">ינואר</option>
+                <option value="02">פברואר</option>
+                <option value="03">מרץ</option>
+                <option value="04">אפריל</option>
+                <option value="05">מאי</option>
+                <option value="06">יוני</option>
+                <option value="07">יולי</option>
+                <option value="08">אוגוסט</option>
+                <option value="09">ספטמבר</option>
+                <option value="10">אוקטובר</option>
+                <option value="11">נובמבר</option>
+                <option value="12">דצמבר</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>שנה</label>
+              <select id="reportYear" required>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+              </select>
+            </div>
+
+            <button id="generateReportBtn" class="btn btn-primary">הנר דוח</button>
+          </div>
+
+          <!-- Total Report -->
+          <div class="report-card">
+            <h3>סך הכנסות חודשיות</h3>
+            <div id="totalReportData" class="report-data">
+              <div class="stat">
+                <span>סה"כ ללא מעמ"מ:</span>
+                <strong id="totalWithoutVat">0.00</strong>
+              </div>
+              <div class="stat">
+                <span>מעמ"מ:</span>
+                <strong id="totalVat">0.00</strong>
+              </div>
+              <div class="stat highlight">
+                <span>סה"כ כולל מעמ"מ:</span>
+                <strong id="totalWithVat">0.00</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- By Company Report -->
+          <div class="report-card">
+            <h3>הכנסות לפי חברה</h3>
+            <div id="byCompanyData" class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>חברה</th>
+                    <th>ללא מעמ"מ</th>
+                    <th>כולל מעמ"מ</th>
+                    <th>עסקאות</th>
+                  </tr>
+                </thead>
+                <tbody id="byCompanyTable">
+                  <tr><td colspan="4">אין נתונים</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- By Branch Report -->
+          <div class="report-card">
+            <h3>הכנסות לפי סניף</h3>
+            <div id="byBranchData" class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>סניף</th>
+                    <th>חברה</th>
+                    <th>ללא מעמ"מ</th>
+                    <th>כולל מעמ"מ</th>
+                    <th>עסקאות</th>
+                  </tr>
+                </thead>
+                <tbody id="byBranchTable">
+                  <tr><td colspan="5">אין נתונים</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
