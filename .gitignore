@@ -1,0 +1,13 @@
+node_modules/
+.env
+.DS_Store
+*.log
+citywash.db
+הכנסות 2026.xlsx
+חברות_וסניפים.xlsx
+מדריך_סיטי_וואש_אקספרס_לעובד_חדש.txt
+סקריפטים_סרטוני_AI.docx
+*.command
+*.scpt
+.env.local
+.env.*.local
